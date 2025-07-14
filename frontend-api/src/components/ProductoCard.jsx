@@ -1,19 +1,37 @@
 import React from "react";
 import { eliminarProducto } from "../services/productos";
+import Swal from "sweetalert2";
 
 const ProductoCard = ({ producto, setActualizar }) => {
-  const handleDelete = async () => {
-    const confirmacion = confirm(`¿Eliminar "${producto.nombre}"?`);
-    if (!confirmacion) return;
+  const handleDelete = () => {
+    Swal.fire({
+      title: `¿Eliminar "${producto.nombre}"?`,
+      text: "Esta acción no se puede deshacer",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await eliminarProducto(producto.id);
 
-    try {
-      await eliminarProducto(producto.id);
-      alert("Producto eliminado");
-      setActualizar(true); // <- Esto recarga los productos
-    } catch (error) {
-      console.error("Error al eliminar producto:", error);
-      alert("No se pudo eliminar.");
-    }
+          Swal.fire(
+            "Eliminado",
+            "El producto fue eliminado correctamente.",
+            "success"
+          );
+
+          // ✅ Recargar productos desde el padre
+          setActualizar(true);
+        } catch (error) {
+          console.error("Error al eliminar:", error);
+          Swal.fire("Error", "No se pudo eliminar el producto.", "error");
+        }
+      }
+    });
   };
 
   return (

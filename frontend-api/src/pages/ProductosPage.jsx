@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { obtenerProductos } from "../services/productos";
 import ProductoCard from "../components/ProductoCard";
 import FormularioProducto from "../components/FormularioProducto";
-
 // Página principal de productos
 // que muestra un formulario para crear productos
 const ProductosPage = () => {
