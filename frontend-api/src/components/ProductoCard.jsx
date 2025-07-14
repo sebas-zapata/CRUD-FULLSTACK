@@ -1,6 +1,21 @@
 import React from "react";
+import { eliminarProducto } from "../services/productos";
 
-const ProductoCard = ({ producto }) => {
+const ProductoCard = ({ producto, setActualizar }) => {
+  const handleDelete = async () => {
+    const confirmacion = confirm(`¿Eliminar "${producto.nombre}"?`);
+    if (!confirmacion) return;
+
+    try {
+      await eliminarProducto(producto.id);
+      alert("Producto eliminado");
+      setActualizar(true); // <- Esto recarga los productos
+    } catch (error) {
+      console.error("Error al eliminar producto:", error);
+      alert("No se pudo eliminar.");
+    }
+  };
+
   return (
     <div className="bg-white shadow-md rounded-2xl p-5 hover:shadow-xl transition duration-300">
       <h2 className="text-xl font-semibold text-blue-600 mb-2">
@@ -32,6 +47,12 @@ const ProductoCard = ({ producto }) => {
           minute: "2-digit",
         })}
       </p>
+      <button
+        onClick={handleDelete}
+        className=" bg-red-500 text-white px-2 py-1 my-2 cursor-pointer rounded hover:bg-red-600"
+      >
+        Eliminar
+      </button>
     </div>
   );
 };
