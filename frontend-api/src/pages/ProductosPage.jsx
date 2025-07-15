@@ -11,6 +11,8 @@ const ProductosPage = () => {
   const [actualizarListaProductos, setActualizarListaProductos] =
     useState(true);
 
+  const [form, setForm] = useState(false);
+
   useEffect(() => {
     if (!actualizarListaProductos) return; // Solo carga si se necesita
 
@@ -35,9 +37,10 @@ const ProductosPage = () => {
   // y actualizar la lista de productos
   const manejarProductoCreado = (nuevoProducto) => {
     setProductos((productosAnteriores) => [
-      nuevoProducto,
       ...productosAnteriores,
+      nuevoProducto,
     ]);
+    setForm(false);
     setMensaje("Producto creado exitosamente.");
   };
 
@@ -45,7 +48,13 @@ const ProductosPage = () => {
   // con el formulario y la lista de productos
   return (
     <>
-      <FormularioProducto onProductoCreado={manejarProductoCreado} />
+      <button
+        className="bg-blue-600 text-amber-100 rounded cursor-pointer hover:bg-blue-700 p-2 m-3"
+        onClick={() => setForm(!form)}
+      >
+        {form ? "Ocultar Formulario" : "Mostrar Formulario"}
+      </button>
+      {form && <FormularioProducto onProductoCreado={manejarProductoCreado} />}
       <div className="container mx-auto px-4">
         <h1 className="text-3xl font-bold mb-6 text-center mt-3">
           <strong className="text-blue-700">

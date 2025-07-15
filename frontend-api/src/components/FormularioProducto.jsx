@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { crearProducto } from "../services/productos";
+import Swal from "sweetalert2";
 
 const FormularioProducto = ({ onProductoCreado }) => {
   const [nombre, setNombre] = useState("");
@@ -20,22 +21,39 @@ const FormularioProducto = ({ onProductoCreado }) => {
         precio: parseFloat(precio),
       };
 
-      const { producto, mensaje } = await crearProducto(nuevoProducto);
-      if (onProductoCreado) {
-        onProductoCreado(producto);
+      // 🔥 Consumimos la API
+      const res = await crearProducto(nuevoProducto);
+
+      // ✅ Mostramos mensaje de éxito desde la API
+      Swal.fire({
+        icon: "success",
+        title: "¡Éxito!",
+        text: res.mensaje, // viene desde tu backend
+        timer: 2000,
+        showConfirmButton: false,
+      });
+
+      // ✅ Enviamos el producto al padre para actualizar la lista
+      if (typeof onProductoCreado === "function") {
+        onProductoCreado(res.producto);
       }
 
-      setMensaje(mensaje);
-      setEsError(false);
-      // Limpiar el formulario
+      // ✅ Limpiamos el formulario
       setNombre("");
       setDescripcion("");
       setStock("");
       setPrecio("");
     } catch (error) {
       console.error("Error al crear producto:", error);
-      setMensaje("Error al crear producto.");
-      setEsError(true);
+      const mensajeError =
+        error.response?.data?.mensaje || "Error al registrar producto.";
+
+      // ❌ Mostramos alerta de error
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: mensajeError,
+      });
     }
   };
 
