@@ -52,7 +52,7 @@ const ProductosPage = () => {
         className="bg-blue-600 text-amber-100 rounded cursor-pointer hover:bg-blue-700 p-2 m-3"
         onClick={() => setForm(!form)}
       >
-        {form ? "Ocultar Formulario" : "Mostrar Formulario"}
+        {form ? "Ocultar Formulario" : "Registrar Producto"}
       </button>
       {form && <FormularioProducto onProductoCreado={manejarProductoCreado} />}
       <div className="container mx-auto px-4">
