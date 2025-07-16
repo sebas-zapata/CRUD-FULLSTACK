@@ -17,7 +17,7 @@ const ProductosPage = () => {
   // Efecto para cargar productos al montar el componente
   // y cada vez que se actualiza la lista de productos
   useEffect(() => {
-    if (!actualizarListaProductos) return; // Solo carga si se necesita 
+    if (!actualizarListaProductos) return; // Solo carga si se necesita
     const cargarProductos = async () => {
       try {
         const { productos, mensaje } = await obtenerProductos();
@@ -35,7 +35,7 @@ const ProductosPage = () => {
     // Cargar productos al montar el componente
     cargarProductos();
 
-  // Limpiar el estado de edición al desmontar
+    // Limpiar el estado de edición al desmontar
   }, [actualizarListaProductos]);
 
   // Manejar la creación de un nuevo producto
@@ -83,15 +83,30 @@ const ProductosPage = () => {
         className="bg-blue-600 text-amber-100 rounded cursor-pointer hover:bg-blue-700 p-2 m-3"
         onClick={() => setForm(!form)}
       >
-        {form ? "Ocultar Formulario" : "Registrar Producto"}
+        Registrar producto
       </button>
       {/* Mostrar formulario si 'form' es true */}
       {form && (
-        <FormularioProducto
-          onProductoCreado={manejarProductoCreado}
-          productoEditando={productoEditando}
-          onActualizarProducto={manejarProductoActualizado}
-        />
+        <div className="fixed inset-0 bg-gradient-to-br from-black/30 via-gray-900/20 to-black/30 flex items-center justify-center">
+          <div className="bg-white p-6 rounded-xl shadow-lg relative w-full max-w-md mx-4">
+            <div className="relative">
+              <button
+                onClick={() => {
+                  setForm(false);
+                  setProductoEditando(null);
+                }}
+                className="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-xl"
+              >
+                &times;
+              </button>
+              <FormularioProducto
+                onProductoCreado={manejarProductoCreado}
+                productoEditando={productoEditando}
+                onActualizarProducto={manejarProductoActualizado}
+              />
+            </div>
+          </div>
+        </div>
       )}
       {/* Mostrar mensaje de estado */}
       <div className="container mx-auto px-4">

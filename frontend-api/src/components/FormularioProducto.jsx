@@ -2,7 +2,11 @@ import React, { useState, useEffect } from "react";
 import { crearProducto, actualizarProducto } from "../services/productos";
 import Swal from "sweetalert2";
 
-const FormularioProducto = ({ onProductoCreado,onActualizarProducto, productoEditando }) => {
+const FormularioProducto = ({
+  onProductoCreado,
+  onActualizarProducto,
+  productoEditando,
+}) => {
   const [nombre, setNombre] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const [stock, setStock] = useState("");
@@ -92,10 +96,7 @@ const FormularioProducto = ({ onProductoCreado,onActualizarProducto, productoEdi
   };
 
   return (
-    <form
-      onSubmit={manejarSubmit}
-      className="bg-white p-6 rounded-lg shadow-md mb-6 max-w-xl mx-auto"
-    >
+    <form onSubmit={manejarSubmit}>
       <h2 className="text-2xl font-bold mb-4 text-center text-blue-600">
         Crear nuevo producto
       </h2>
@@ -162,7 +163,7 @@ const FormularioProducto = ({ onProductoCreado,onActualizarProducto, productoEdi
         type="submit"
         className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
       >
-        Guardar producto
+        {productoEditando ? "Actualizar producto" : "Registrar producto"}
       </button>
     </form>
   );
