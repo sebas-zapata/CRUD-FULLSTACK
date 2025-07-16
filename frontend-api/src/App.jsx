@@ -1,7 +1,7 @@
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
 import ProductosPage from "./pages/ProductosPage";
-import Inicio from "./pages/Inicio";
+import Inicio from "./pages/inicio";
 import NotFound from "./pages/NotFound";
 
 function App() {
