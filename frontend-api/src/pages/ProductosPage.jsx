@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { obtenerProductos } from "../services/productos";
 import ProductoCard from "../components/ProductoCard";
 import FormularioProducto from "../components/FormularioProducto";
+
 // Página principal de productos
 // que muestra un formulario para crear productos
 const ProductosPage = () => {
@@ -10,12 +11,13 @@ const ProductosPage = () => {
   const [cargando, setCargando] = useState(true);
   const [actualizarListaProductos, setActualizarListaProductos] =
     useState(true);
-
   const [form, setForm] = useState(false);
+  const [productoEditando, setProductoEditando] = useState(null);
 
+  // Efecto para cargar productos al montar el componente
+  // y cada vez que se actualiza la lista de productos
   useEffect(() => {
-    if (!actualizarListaProductos) return; // Solo carga si se necesita
-
+    if (!actualizarListaProductos) return; // Solo carga si se necesita 
     const cargarProductos = async () => {
       try {
         const { productos, mensaje } = await obtenerProductos();
@@ -30,7 +32,10 @@ const ProductosPage = () => {
       }
     };
 
+    // Cargar productos al montar el componente
     cargarProductos();
+
+  // Limpiar el estado de edición al desmontar
   }, [actualizarListaProductos]);
 
   // Manejar la creación de un nuevo producto
@@ -44,17 +49,51 @@ const ProductosPage = () => {
     setMensaje("Producto creado exitosamente.");
   };
 
+  // Manejar edición de un producto
+  const iniciarEdicion = (producto) => {
+    setForm(true);
+    setProductoEditando(producto);
+  };
+
+  // Manejar actualización de un producto
+  // y actualizar la lista de productos
+  const manejarProductoActualizado = (productoModificado) => {
+    setProductos((productosAnteriores) =>
+      productosAnteriores.map((productoActual) =>
+        productoActual.id === productoModificado.id
+          ? productoModificado
+          : productoActual
+      )
+    );
+
+    // Oculta el formulario
+    setForm(false);
+
+    // Limpia el estado del producto en edición
+    setProductoEditando(null);
+  };
+
   // Renderizar la página de productos
   // con el formulario y la lista de productos
   return (
     <>
+      {/* Botón para mostrar/ocultar el formulario */}
+      {/* Si 'form' es true, muestra el formulario para crear un producto */}
       <button
         className="bg-blue-600 text-amber-100 rounded cursor-pointer hover:bg-blue-700 p-2 m-3"
         onClick={() => setForm(!form)}
       >
         {form ? "Ocultar Formulario" : "Registrar Producto"}
       </button>
-      {form && <FormularioProducto onProductoCreado={manejarProductoCreado} />}
+      {/* Mostrar formulario si 'form' es true */}
+      {form && (
+        <FormularioProducto
+          onProductoCreado={manejarProductoCreado}
+          productoEditando={productoEditando}
+          onActualizarProducto={manejarProductoActualizado}
+        />
+      )}
+      {/* Mostrar mensaje de estado */}
       <div className="container mx-auto px-4">
         <h1 className="text-3xl font-bold mb-6 text-center mt-3">
           <strong className="text-blue-700">
@@ -73,6 +112,7 @@ const ProductosPage = () => {
           )}
         </div>
 
+        {/* Lista de productos */}
         {productos.length > 0 && (
           <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
             {productos.map((producto) => (
@@ -80,6 +120,7 @@ const ProductosPage = () => {
                 key={producto.id}
                 producto={producto}
                 setActualizar={setActualizarListaProductos}
+                onEditar={iniciarEdicion}
               />
             ))}
           </div>

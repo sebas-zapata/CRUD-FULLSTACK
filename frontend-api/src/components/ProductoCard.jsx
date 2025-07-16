@@ -2,7 +2,7 @@ import React from "react";
 import { eliminarProducto } from "../services/productos";
 import Swal from "sweetalert2";
 
-const ProductoCard = ({ producto, setActualizar }) => {
+const ProductoCard = ({ producto, setActualizar, onEditar }) => {
   const handleDelete = () => {
     Swal.fire({
       title: `¿Eliminar "${producto.nombre}"?`,

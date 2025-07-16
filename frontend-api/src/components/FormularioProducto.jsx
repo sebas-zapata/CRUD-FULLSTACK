@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import { crearProducto } from "../services/productos";
+import React, { useState, useEffect } from "react";
+import { crearProducto, actualizarProducto } from "../services/productos";
 import Swal from "sweetalert2";
 
-const FormularioProducto = ({ onProductoCreado }) => {
+const FormularioProducto = ({ onProductoCreado,onActualizarProducto, productoEditando }) => {
   const [nombre, setNombre] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const [stock, setStock] = useState("");
@@ -11,44 +11,78 @@ const FormularioProducto = ({ onProductoCreado }) => {
   const [mensaje, setMensaje] = useState("");
   const [esError, setEsError] = useState(false);
 
+  // Efecto para manejar la edición de un producto
+  // Si se recibe un producto a editar, lo carga en el formulario
+  useEffect(() => {
+    if (productoEditando) {
+      setNombre(productoEditando.nombre);
+      setDescripcion(productoEditando.descripcion);
+      setPrecio(productoEditando.precio);
+      setStock(productoEditando.stock);
+    } else {
+      // Si no estamos editando, limpiamos el formulario
+      setNombre("");
+      setDescripcion("");
+      setPrecio("");
+      setStock("");
+    }
+  }, [productoEditando]);
+
   const manejarSubmit = async (e) => {
     e.preventDefault();
+
     try {
-      const nuevoProducto = {
+      const datosProducto = {
         nombre,
         descripcion,
         stock: parseInt(stock, 10),
         precio: parseFloat(precio),
       };
 
-      // 🔥 Consumimos la API
-      const res = await crearProducto(nuevoProducto);
+      let res;
 
-      // ✅ Mostramos mensaje de éxito desde la API
-      Swal.fire({
-        icon: "success",
-        title: "¡Éxito!",
-        text: res.mensaje, // viene desde tu backend
-        timer: 2000,
-        showConfirmButton: false,
-      });
+      if (productoEditando) {
+        // 🛠️ Editar producto
+        res = await actualizarProducto(productoEditando.id, datosProducto);
 
-      // ✅ Enviamos el producto al padre para actualizar la lista
-      if (typeof onProductoCreado === "function") {
-        onProductoCreado(res.producto);
+        Swal.fire({
+          icon: "success",
+          title: "¡Actualizado!",
+          text: res.mensaje,
+          timer: 2000,
+          showConfirmButton: false,
+        });
+
+        if (typeof onActualizarProducto === "function") {
+          onActualizarProducto(res.producto);
+        }
+      } else {
+        // 🆕 Crear producto
+        res = await crearProducto(datosProducto);
+
+        Swal.fire({
+          icon: "success",
+          title: "¡Registrado!",
+          text: res.mensaje,
+          timer: 2000,
+          showConfirmButton: false,
+        });
+
+        if (typeof onProductoCreado === "function") {
+          onProductoCreado(res.producto);
+        }
       }
 
-      // ✅ Limpiamos el formulario
+      // ✅ Limpiar formulario
       setNombre("");
       setDescripcion("");
       setStock("");
       setPrecio("");
     } catch (error) {
-      console.error("Error al crear producto:", error);
+      console.error("Error al guardar producto:", error);
       const mensajeError =
-        error.response?.data?.mensaje || "Error al registrar producto.";
+        error.response?.data?.mensaje || "Error al guardar producto.";
 
-      // ❌ Mostramos alerta de error
       Swal.fire({
         icon: "error",
         title: "Error",
