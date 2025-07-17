@@ -104,7 +104,7 @@ const ProductoCard = ({ producto, setActualizar, onEditar }) => {
   }).format(producto.precio);
 
   return (
-    <div className="bg-white shadow-md rounded-2xl p-2 hover:shadow-2xl cursor-pointer transition duration-300">
+    <div className="bg-white shadow-md rounded-2xl p-4 hover:shadow-2xl cursor-pointer transition duration-300">
       <h2 className="text-xl font-semibold text-blue-600 mb-2">
         {producto.nombre}
       </h2>
@@ -112,7 +112,7 @@ const ProductoCard = ({ producto, setActualizar, onEditar }) => {
 
       <p className="text-green-600 font-bold text-lg">{precioFormateado}</p>
 
-      <div className="border-t border-gray-200 mt-4 w-ful p-4 flex flex-wrap justify-center gap-3">
+      <div className="border-t border-gray-200 mt-4 w-ful p-4 flex flex-wrap justify-center items-center gap-3">
         <button
           onClick={handleDelete}
           className="bg-red-500 flex items-center justify-center text-white px-4 py-2 cursor-pointer rounded hover:bg-red-700"

@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { obtenerProductos } from "../services/productos";
 import ProductoCard from "../components/ProductoCard";
 import FormularioProducto from "../components/FormularioProducto";
-import { FaPlus, FaTimes } from "react-icons/fa";
+import { FaPlus, FaTimes, FaArrowLeft } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 // Página principal de productos
 // que muestra un formulario para crear productos
@@ -77,7 +78,7 @@ const ProductosPage = () => {
   // Renderizar la página de productos
   // con el formulario y la lista de productos
   return (
-    <>
+    <div className="min-h-screen bg-gradient-to-br from-white via-blue-50 to-blue-100 p-4">
       {/* Mostrar formulario si 'form' es true */}
       {form && (
         <div className="fixed inset-0 bg-gradient-to-br from-black/30 via-gray-900/20 to-black/30 flex items-center justify-center">
@@ -120,13 +121,24 @@ const ProductosPage = () => {
         </div>
 
         {/* Botón para mostrar el formulario */}
-        <button
-          className="flex items-center gap-2 bg-blue-600 text-white rounded px-4 py-2 m-3 hover:bg-blue-700 transition cursor-pointer"
-          onClick={() => setForm(!form)}
-        >
-          <FaPlus className="text-white text-base" />
-          Registrar producto
-        </button>
+        <div className="flex justify-between mb-4">
+          <button>
+            <Link
+              to="/"
+              className="flex items-center gap-2 bg-blue-600 text-white rounded px-4 py-2 m-3 hover:bg-blue-700 transition cursor-pointer"
+            >
+              <FaArrowLeft className="text-white text-base" />
+              Volver al inicio
+            </Link>
+          </button>
+          <button
+            className="flex items-center gap-2 bg-blue-600 text-white rounded px-4 py-2 m-3 hover:bg-blue-700 transition cursor-pointer"
+            onClick={() => setForm(!form)}
+          >
+            <FaPlus className="text-white text-base" />
+            Registrar producto
+          </button>
+        </div>
 
         {/* Lista de productos */}
         {productos.length > 0 && (
@@ -142,7 +154,7 @@ const ProductosPage = () => {
           </div>
         )}
       </div>
-    </>
+    </div>
   );
 };
 
