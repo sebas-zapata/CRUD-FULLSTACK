@@ -88,7 +88,7 @@ const ProductosPage = () => {
                   setForm(false);
                   setProductoEditando(null);
                 }}
-                className="absolute top-3 right-2 px-2 rounded-4xl cursor-pointer hover:text-gray-700 text-6xl"
+                className="absolute top-3 right-1 px-2 rounded cursor-pointer hover:text-gray-700 text-7xl"
               >
                 <FaTimes className="text-red-500 text-4xl rounded bg-gray-100 hover:text-gray-500" />
               </button>

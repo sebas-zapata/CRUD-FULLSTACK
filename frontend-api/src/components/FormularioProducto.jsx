@@ -39,25 +39,31 @@ const FormularioProducto = ({
     // 🧪 Validación previa
     if (!nombre.trim() || !descripcion.trim() || !stock || !precio) {
       return Swal.fire({
-        icon: "warning",
+        icon: "error",
         title: "Campos incompletos",
         text: "Por favor completa todos los campos del formulario.",
+        showConfirmButton: false,
+        showCloseButton: true,
       });
     }
 
     if (parseInt(stock, 10) <= 0) {
       return Swal.fire({
-        icon: "warning",
+        icon: "error",
         title: "Stock inválido",
         text: "El stock debe ser un número mayor a 0.",
+        showConfirmButton: false,
+        showCloseButton: true,
       });
     }
 
     if (parseFloat(precio) <= 0) {
       return Swal.fire({
-        icon: "warning",
+        icon: "error",
         title: "Precio inválido",
         text: "El precio debe ser un valor mayor a 0.",
+        showConfirmButton: false,
+        showCloseButton: true,
       });
     }
 
@@ -77,9 +83,9 @@ const FormularioProducto = ({
 
         Swal.fire({
           icon: "success",
-          title: "¡Actualizado!",
-          text: res.mensaje,
-          timer: 2000,
+          title: `¡${res.mensaje}!`,
+          text: `El producto "${nombre}" se actualizó correctamente.`,
+          timer: 2800,
           showConfirmButton: false,
         });
 
@@ -92,9 +98,9 @@ const FormularioProducto = ({
 
         Swal.fire({
           icon: "success",
-          title: "¡Registrado!",
-          text: res.mensaje,
-          timer: 2000,
+          title: `¡${res.mensaje}!`,
+          text: `El producto "${nombre}" se creó correctamente.`,
+          timer: 2800,
           showConfirmButton: false,
         });
 
@@ -122,87 +128,91 @@ const FormularioProducto = ({
   };
 
   return (
-    <form onSubmit={manejarSubmit} autoComplete="off">
-      {/* Título del formulario */}
-      <h2 className="text-2xl font-bold mb-4 text-center text-blue-600">
-        <FaPencilAlt className="inline-block mr-2" />
-        {productoEditando ? "Editar Producto" : "Registrar Producto"}
-      </h2>
+    <div className="max-h-[80vh] overflow-y-auto p-4 bg-white rounded">
+      <form onSubmit={manejarSubmit} autoComplete="off">
+        {/* Título del formulario */}
+        <h2 className="text-2xl font-bold mb-4 text-center text-blue-600">
+          <FaPencilAlt className="inline-block mr-2" />
+          {productoEditando ? "Editar Producto" : "Registrar nuevo Producto"}
+        </h2>
 
-      {mensaje && (
-        <p
-          className={`mb-4 text-center font-medium ${
-            esError ? "text-red-500" : "text-green-600"
-          }`}
-        >
-          {mensaje}
-        </p>
-      )}
-
-      <div className="mb-4">
-        <label className="block mb-1 text-sm">Nombre</label>
-        <input
-          type="text"
-          name="nombre"
-          value={nombre}
-          onChange={(e) => setNombre(e.target.value)}
-          placeholder="Ej. Camiseta Nike"
-          className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-      </div>
-
-      <div className="mb-4">
-        <label className="block mb-1 text-sm">Descripción</label>
-        <input
-          type="text"
-          name="descripcion"
-          value={descripcion}
-          onChange={(e) => setDescripcion(e.target.value)}
-          placeholder="Ej. Camiseta deportiva para entrenamiento"
-          className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-      </div>
-
-      <div className="mb-4">
-        <label className="block mb-1 text-sm">Stock</label>
-        <input
-          type="number"
-          name="stock"
-          value={stock}
-          onChange={(e) => setStock(e.target.value)}
-          placeholder="Ej. 25"
-          className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-      </div>
-
-      <div className="mb-4">
-        <label className="block mb-1 text-sm">Precio</label>
-        <input
-          type="number"
-          name="precio"
-          value={precio}
-          onChange={(e) => setPrecio(e.target.value)}
-          placeholder="Ej. 49.900"
-          className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-      </div>
-
-      <button
-        type="submit"
-        className="w-full flex items-center gap-2 justify-center bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition cursor-pointer"
-      >
-        {productoEditando ? (
-          <>
-            Actualizar producto{" "}
-            <FaBoxOpen className="text-white text-base me-1" />
-          </>
-        ) : (
-          <>
-            Registrar producto <FaPlus className="text-white text-base me-1" />
-          </>
+        {mensaje && (
+          <p
+            className={`mb-4 text-center font-medium ${
+              esError ? "text-red-500" : "text-green-600"
+            }`}
+          >
+            {mensaje}
+          </p>
         )}
-      </button>
-    </form>
+
+        <div className="mb-4">
+          <label className="block mb-1 text-sm">Nombre</label>
+          <input
+            type="text"
+            name="nombre"
+            value={nombre}
+            onChange={(e) => setNombre(e.target.value)}
+            placeholder="Ej. Camiseta Nike"
+            className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+
+        <div className="mb-4">
+          <label className="block mb-1 text-sm">Descripción</label>
+          <textarea
+            name="descripcion"
+            value={descripcion}
+            onChange={(e) => setDescripcion(e.target.value)}
+            cols="3"
+            rows="3"
+            placeholder="Ej. Camiseta de algodón 100% con logo bordado"
+            className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          ></textarea>
+        </div>
+
+        <div className="mb-4">
+          <label className="block mb-1 text-sm">Stock</label>
+          <input
+            type="number"
+            name="stock"
+            value={stock}
+            onChange={(e) => setStock(e.target.value)}
+            placeholder="Ej. 25"
+            className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+
+        <div className="mb-4">
+          <label className="block mb-1 text-sm">Precio</label>
+          <input
+            type="number"
+            name="precio"
+            value={precio}
+            onChange={(e) => setPrecio(e.target.value)}
+            placeholder="Ej. 49.900"
+            className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+
+        <button
+          type="submit"
+          className="w-full flex items-center gap-2 justify-center bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition cursor-pointer"
+        >
+          {productoEditando ? (
+            <>
+              Actualizar producto{" "}
+              <FaBoxOpen className="text-white text-base me-1" />
+            </>
+          ) : (
+            <>
+              Registrar producto{" "}
+              <FaPlus className="text-white text-base me-1" />
+            </>
+          )}
+        </button>
+      </form>
+    </div>
   );
 };
 

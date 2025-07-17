@@ -7,7 +7,7 @@ const ProductoCard = ({ producto, setActualizar, onEditar }) => {
     Swal.fire({
       title: `¿Eliminar "${producto.nombre}"?`,
       text: "Esta acción no se puede deshacer",
-      icon: "warning",
+      icon: "question",
       showCancelButton: true,
       confirmButtonColor: "#d33",
       cancelButtonColor: "#3085d6",
@@ -16,13 +16,15 @@ const ProductoCard = ({ producto, setActualizar, onEditar }) => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          await eliminarProducto(producto.id);
+          const res = await eliminarProducto(producto.id);
 
-          Swal.fire(
-            "Eliminado",
-            `El producto ${producto.nombre} fue eliminado correctamente.`,
-            "success"
-          );
+          Swal.fire({
+            icon: "success",
+            title: `¡${res.mensaje}!`,
+            text: `El producto ${producto.nombre} fue eliminado correctamente.`,
+            timer: 2800,
+            showConfirmButton: false,
+          });
 
           // ✅ Recargar productos desde el padre
           setActualizar(true);
@@ -88,6 +90,7 @@ const ProductoCard = ({ producto, setActualizar, onEditar }) => {
       confirmButtonText: "Cerrar",
       showCloseButton: true,
       focusConfirm: false,
+      showConfirmButton: false,
       customClass: {
         popup: "swal2-border-radius",
         title: "swal2-title-custom",
@@ -101,41 +104,40 @@ const ProductoCard = ({ producto, setActualizar, onEditar }) => {
   }).format(producto.precio);
 
   return (
-  <div className="bg-white shadow-md rounded-2xl p-5 hover:shadow-2xl cursor-pointer transition duration-300">
-    <h2 className="text-xl font-semibold text-blue-600 mb-2">
-      {producto.nombre}
-    </h2>
-    <h3 className="text-gray-600 text-sm mb-2">{producto.descripcion}</h3>
+    <div className="bg-white shadow-md rounded-2xl p-2 hover:shadow-2xl cursor-pointer transition duration-300">
+      <h2 className="text-xl font-semibold text-blue-600 mb-2">
+        {producto.nombre}
+      </h2>
+      <h3 className="text-gray-600 text-sm mb-2">{producto.descripcion}</h3>
 
-    <p className="text-green-600 font-bold text-lg">{precioFormateado}</p>
+      <p className="text-green-600 font-bold text-lg">{precioFormateado}</p>
 
-    <div className="border-t border-gray-200 mt-4 pt-2 flex flex-col sm:flex-row sm:justify-center sm:flex-wrap gap-2">
-      <button
-        onClick={handleDelete}
-        className="w-full sm:w-auto bg-red-500 flex items-center justify-center text-white px-4 py-2 cursor-pointer rounded hover:bg-red-700"
-      >
-        <FaTrash className="text-white text-base me-1" />
-        Eliminar
-      </button>
+      <div className="border-t border-gray-200 mt-4 w-ful p-4 flex flex-wrap justify-center gap-3">
+        <button
+          onClick={handleDelete}
+          className="bg-red-500 flex items-center justify-center text-white px-4 py-2 cursor-pointer rounded hover:bg-red-700"
+        >
+          <FaTrash className="text-white text-base me-1" />
+          Eliminar
+        </button>
 
-      <button
-        className="w-full sm:w-auto bg-blue-600 flex items-center justify-center text-white px-4 py-2 rounded cursor-pointer hover:bg-blue-700"
-        onClick={() => onEditar(producto)}
-      >
-        <FaEdit className="text-white text-base me-1" />
-        Editar
-      </button>
+        <button
+          className="bg-blue-600 flex items-center justify-center text-white px-4 py-2 rounded cursor-pointer hover:bg-blue-700"
+          onClick={() => onEditar(producto)}
+        >
+          <FaEdit className="text-white text-base me-1" />
+          Editar
+        </button>
 
-      <button
-        onClick={() => handleInformacion(producto)}
-        className="w-full sm:w-auto bg-gray-600 flex items-center justify-center text-white px-4 py-2 rounded cursor-pointer hover:bg-gray-700"
-      >
-        <FaSearch className="text-white text-base me-1" />
-        Ver información
-      </button>
+        <button
+          onClick={() => handleInformacion(producto)}
+          className="bg-gray-600 flex items-center justify-center text-white px-4 py-2 rounded cursor-pointer hover:bg-gray-700"
+        >
+          <FaSearch className="text-white text-base me-1" />
+          Detalles
+        </button>
+      </div>
     </div>
-  </div>
-
   );
 };
 
