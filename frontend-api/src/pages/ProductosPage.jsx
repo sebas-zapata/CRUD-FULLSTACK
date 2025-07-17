@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { obtenerProductos } from "../services/productos";
 import ProductoCard from "../components/ProductoCard";
 import FormularioProducto from "../components/FormularioProducto";
-import { FaPlus } from "react-icons/fa";
+import { FaPlus, FaTimes } from "react-icons/fa";
 
 // Página principal de productos
 // que muestra un formulario para crear productos
@@ -78,29 +78,19 @@ const ProductosPage = () => {
   // con el formulario y la lista de productos
   return (
     <>
-      {/* Botón para mostrar/ocultar el formulario */}
-      {/* Si 'form' es true, muestra el formulario para crear un producto */}
-
-      <button
-        className="flex items-center gap-2 bg-blue-600 text-white rounded px-4 py-2 m-3 hover:bg-blue-700 transition cursor-pointer"
-        onClick={() => setForm(!form)}
-      >
-        <FaPlus className="text-white text-base" />
-        Registrar producto
-      </button>
       {/* Mostrar formulario si 'form' es true */}
       {form && (
         <div className="fixed inset-0 bg-gradient-to-br from-black/30 via-gray-900/20 to-black/30 flex items-center justify-center">
-          <div className="bg-white p-6 rounded-xl shadow-lg relative w-full max-w-md mx-4">
-            <div className="relative">
+          <div className="bg-white relative p-6 rounded-xl shadow-lg w-full max-w-md mx-4">
+            <div className="p-3">
               <button
                 onClick={() => {
                   setForm(false);
                   setProductoEditando(null);
                 }}
-                className="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-xl"
+                className="absolute top-3 right-2 px-2 rounded-4xl cursor-pointer hover:text-gray-700 text-6xl"
               >
-                &times;
+                <FaTimes className="text-red-500 text-4xl rounded bg-gray-100 hover:text-gray-500" />
               </button>
               <FormularioProducto
                 onProductoCreado={manejarProductoCreado}
@@ -118,7 +108,6 @@ const ProductosPage = () => {
             Productos {productos.length}
           </strong>
         </h1>
-
         {/* Mensaje de estado */}
         <div className="mb-4 text-center">
           {cargando ? (
@@ -129,6 +118,15 @@ const ProductosPage = () => {
             <p className="text-green-600 font-medium text-lg">{mensaje}</p>
           )}
         </div>
+
+        {/* Botón para mostrar el formulario */}
+        <button
+          className="flex items-center gap-2 bg-blue-600 text-white rounded px-4 py-2 m-3 hover:bg-blue-700 transition cursor-pointer"
+          onClick={() => setForm(!form)}
+        >
+          <FaPlus className="text-white text-base" />
+          Registrar producto
+        </button>
 
         {/* Lista de productos */}
         {productos.length > 0 && (
