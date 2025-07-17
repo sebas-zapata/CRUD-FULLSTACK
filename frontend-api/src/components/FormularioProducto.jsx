@@ -36,6 +36,31 @@ const FormularioProducto = ({
   const manejarSubmit = async (e) => {
     e.preventDefault();
 
+    // 🧪 Validación previa
+    if (!nombre.trim() || !descripcion.trim() || !stock || !precio) {
+      return Swal.fire({
+        icon: "warning",
+        title: "Campos incompletos",
+        text: "Por favor completa todos los campos del formulario.",
+      });
+    }
+
+    if (parseInt(stock, 10) <= 0) {
+      return Swal.fire({
+        icon: "warning",
+        title: "Stock inválido",
+        text: "El stock debe ser un número mayor a 0.",
+      });
+    }
+
+    if (parseFloat(precio) <= 0) {
+      return Swal.fire({
+        icon: "warning",
+        title: "Precio inválido",
+        text: "El precio debe ser un valor mayor a 0.",
+      });
+    }
+
     try {
       const datosProducto = {
         nombre,
@@ -121,7 +146,7 @@ const FormularioProducto = ({
           name="nombre"
           value={nombre}
           onChange={(e) => setNombre(e.target.value)}
-          required
+          placeholder="Ej. Camiseta Nike"
           className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
@@ -133,7 +158,7 @@ const FormularioProducto = ({
           name="descripcion"
           value={descripcion}
           onChange={(e) => setDescripcion(e.target.value)}
-          required
+          placeholder="Ej. Camiseta deportiva para entrenamiento"
           className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
@@ -145,7 +170,7 @@ const FormularioProducto = ({
           name="stock"
           value={stock}
           onChange={(e) => setStock(e.target.value)}
-          required
+          placeholder="Ej. 25"
           className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
@@ -157,7 +182,7 @@ const FormularioProducto = ({
           name="precio"
           value={precio}
           onChange={(e) => setPrecio(e.target.value)}
-          required
+          placeholder="Ej. 49.900"
           className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
@@ -168,7 +193,8 @@ const FormularioProducto = ({
       >
         {productoEditando ? (
           <>
-            Actualizar producto <FaBoxOpen className="text-white text-base me-1" />
+            Actualizar producto{" "}
+            <FaBoxOpen className="text-white text-base me-1" />
           </>
         ) : (
           <>

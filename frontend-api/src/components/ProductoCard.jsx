@@ -35,36 +35,54 @@ const ProductoCard = ({ producto, setActualizar, onEditar }) => {
   };
 
   const handleInformacion = (producto) => {
+    const precioFormateado = new Intl.NumberFormat("es-CO", {
+      style: "currency",
+      currency: "COP",
+      minimumFractionDigits: 0,
+    }).format(producto.precio);
+
     Swal.fire({
       title: `<strong>${producto.nombre}</strong>`,
       html: `
-      <p style="margin-bottom: 10px;"><em>${producto.descripcion}</em></p>
-      <p><strong>Stock:</strong> ${
-        producto.stock
-          ? producto.stock
-          : '<span style="color: red;">Sin stock</span>'
-      }</p>
-      <hr />
-      <small>
-        <strong>Creado el:</strong> ${new Date(
-          producto.createdAt
-        ).toLocaleDateString("es-CO", {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-          hour: "2-digit",
-          minute: "2-digit",
-        })}<br/>
-        <strong>Actualizado el:</strong> ${new Date(
-          producto.updatedAt
-        ).toLocaleDateString("es-CO", {
-          year: "numeric",
-          month: "short",
-          day: "numeric",
-          hour: "2-digit",
-          minute: "2-digit",
-        })}
-      </small>
+      <div style="text-align: left; font-size: 16px; line-height: 1.6">
+        <p style="margin-bottom: 10px; font-style: italic;">${
+          producto.descripcion
+        }</p>
+
+        <p>
+          <strong>Stock:</strong> ${
+            producto.stock
+              ? `<span style="color: green; font-weight: bold;">${producto.stock}</span>`
+              : `<span style="color: red; font-weight: bold;">Sin stock</span>`
+          }
+        </p>
+
+        <p><strong>Precio:</strong> <span style="color: #0d6efd;">${precioFormateado}</span></p>
+
+        <hr />
+
+        <small style="font-size: 13px; color: #555;">
+          <strong>Creado el:</strong> ${new Date(
+            producto.createdAt
+          ).toLocaleDateString("es-CO", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+          })}<br/>
+
+          <strong>Actualizado el:</strong> ${new Date(
+            producto.updatedAt
+          ).toLocaleDateString("es-CO", {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+          })}
+        </small>
+      </div>
     `,
       icon: "info",
       confirmButtonText: "Cerrar",
@@ -76,38 +94,48 @@ const ProductoCard = ({ producto, setActualizar, onEditar }) => {
       },
     });
   };
+  const precioFormateado = new Intl.NumberFormat("es-CO", {
+    style: "currency",
+    currency: "COP",
+    minimumFractionDigits: 0,
+  }).format(producto.precio);
 
   return (
-    <div className="bg-white shadow-md rounded-2xl p-5 hover:shadow-2xl hover:bg-blue-50 cursor-pointer transition duration-300">
-      <h2 className="text-xl font-semibold text-blue-600 mb-2">
-        {producto.nombre}
-      </h2>
-      <h3 className="text-gray-600 text-sm mb-2">{producto.descripcion}</h3>
-      <p className="text-green-600 font-bold text-lg">${producto.precio}</p>
-      <div className="border-t border-gray-200 mt-4 pt-2 flex justify-center">
-        <button
-          onClick={handleDelete}
-          className="mt-1 bg-red-500 flex items-center text-white px-2 py-1 cursor-pointer rounded hover:bg-red-700"
-        >
-          <FaTrash className="text-white text-base me-1" />
-          Eliminar
-        </button>
-        <button
-          className="mt-1 ms-2 px-2 py-1 flex items-center bg-blue-600 text-white rounded cursor-pointer hover:bg-blue-700"
-          onClick={() => onEditar(producto)}
-        >
-          <FaEdit className="text-white text-base me-1" />
-          Editar
-        </button>
-        <button
-          onClick={() => handleInformacion(producto)}
-          className="mt-1 ms-2 px-2 py-1 flex items-center bg-gray-600 text-white rounded cursor-pointer hover:bg-gray-700"
-        >
-          <FaSearch className="text-white text-base me-1" />
-          Ver informacion
-        </button>
-      </div>
+  <div className="bg-white shadow-md rounded-2xl p-5 hover:shadow-2xl cursor-pointer transition duration-300">
+    <h2 className="text-xl font-semibold text-blue-600 mb-2">
+      {producto.nombre}
+    </h2>
+    <h3 className="text-gray-600 text-sm mb-2">{producto.descripcion}</h3>
+
+    <p className="text-green-600 font-bold text-lg">{precioFormateado}</p>
+
+    <div className="border-t border-gray-200 mt-4 pt-2 flex flex-col sm:flex-row sm:justify-center sm:flex-wrap gap-2">
+      <button
+        onClick={handleDelete}
+        className="w-full sm:w-auto bg-red-500 flex items-center justify-center text-white px-4 py-2 cursor-pointer rounded hover:bg-red-700"
+      >
+        <FaTrash className="text-white text-base me-1" />
+        Eliminar
+      </button>
+
+      <button
+        className="w-full sm:w-auto bg-blue-600 flex items-center justify-center text-white px-4 py-2 rounded cursor-pointer hover:bg-blue-700"
+        onClick={() => onEditar(producto)}
+      >
+        <FaEdit className="text-white text-base me-1" />
+        Editar
+      </button>
+
+      <button
+        onClick={() => handleInformacion(producto)}
+        className="w-full sm:w-auto bg-gray-600 flex items-center justify-center text-white px-4 py-2 rounded cursor-pointer hover:bg-gray-700"
+      >
+        <FaSearch className="text-white text-base me-1" />
+        Ver información
+      </button>
     </div>
+  </div>
+
   );
 };
 
