@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { crearProducto, actualizarProducto } from "../services/productos";
 import Swal from "sweetalert2";
+import { FaBoxOpen, FaPlus, FaPencilAlt } from "react-icons/fa";
 
 const FormularioProducto = ({
   onProductoCreado,
@@ -96,9 +97,11 @@ const FormularioProducto = ({
   };
 
   return (
-    <form onSubmit={manejarSubmit}>
+    <form onSubmit={manejarSubmit} autoComplete="off">
+      {/* Título del formulario */}
       <h2 className="text-2xl font-bold mb-4 text-center text-blue-600">
-        Crear nuevo producto
+        <FaPencilAlt className="inline-block mr-2" />
+        {productoEditando ? "Editar Producto" : "Registrar Producto"}
       </h2>
 
       {mensaje && (
@@ -119,7 +122,7 @@ const FormularioProducto = ({
           value={nombre}
           onChange={(e) => setNombre(e.target.value)}
           required
-          className="w-full border border-gray-300 rounded px-3 py-2"
+          className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
 
@@ -131,7 +134,7 @@ const FormularioProducto = ({
           value={descripcion}
           onChange={(e) => setDescripcion(e.target.value)}
           required
-          className="w-full border border-gray-300 rounded px-3 py-2"
+          className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
 
@@ -143,7 +146,7 @@ const FormularioProducto = ({
           value={stock}
           onChange={(e) => setStock(e.target.value)}
           required
-          className="w-full border border-gray-300 rounded px-3 py-2"
+          className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
 
@@ -155,15 +158,23 @@ const FormularioProducto = ({
           value={precio}
           onChange={(e) => setPrecio(e.target.value)}
           required
-          className="w-full border border-gray-300 rounded px-3 py-2"
+          className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
 
       <button
         type="submit"
-        className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
+        className="w-full flex items-center gap-2 justify-center bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition cursor-pointer"
       >
-        {productoEditando ? "Actualizar producto" : "Registrar producto"}
+        {productoEditando ? (
+          <>
+            Actualizar producto <FaBoxOpen className="text-white text-base me-1" />
+          </>
+        ) : (
+          <>
+            Registrar producto <FaPlus className="text-white text-base me-1" />
+          </>
+        )}
       </button>
     </form>
   );

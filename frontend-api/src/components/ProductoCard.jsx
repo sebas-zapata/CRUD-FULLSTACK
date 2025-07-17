@@ -1,7 +1,7 @@
 import React from "react";
 import { eliminarProducto } from "../services/productos";
 import Swal from "sweetalert2";
-
+import { FaTrash, FaSearch, FaEdit } from "react-icons/fa";
 const ProductoCard = ({ producto, setActualizar, onEditar }) => {
   const handleDelete = () => {
     Swal.fire({
@@ -78,29 +78,32 @@ const ProductoCard = ({ producto, setActualizar, onEditar }) => {
   };
 
   return (
-    <div className="bg-white shadow-md rounded-2xl p-5 hover:shadow-xl transition duration-300">
+    <div className="bg-white shadow-md rounded-2xl p-5 hover:shadow-2xl hover:bg-blue-50 cursor-pointer transition duration-300">
       <h2 className="text-xl font-semibold text-blue-600 mb-2">
         {producto.nombre}
       </h2>
       <h3 className="text-gray-600 text-sm mb-2">{producto.descripcion}</h3>
       <p className="text-green-600 font-bold text-lg">${producto.precio}</p>
-      <div className="border-t border-gray-200 mt-4 pt-2">
+      <div className="border-t border-gray-200 mt-4 pt-2 flex justify-center">
         <button
           onClick={handleDelete}
-          className=" bg-red-500 text-white px-2 py-1 my-2 cursor-pointer rounded hover:bg-red-700"
+          className="mt-1 bg-red-500 flex items-center text-white px-2 py-1 cursor-pointer rounded hover:bg-red-700"
         >
+          <FaTrash className="text-white text-base me-1" />
           Eliminar
         </button>
         <button
-          className="mt-2 ms-2 px-3 py-1 bg-blue-600 text-white rounded cursor-pointer hover:bg-blue-700"
+          className="mt-1 ms-2 px-2 py-1 flex items-center bg-blue-600 text-white rounded cursor-pointer hover:bg-blue-700"
           onClick={() => onEditar(producto)}
         >
+          <FaEdit className="text-white text-base me-1" />
           Editar
         </button>
         <button
           onClick={() => handleInformacion(producto)}
-          className="mt-2 ms-2 px-3 py-1 bg-gray-600 text-white rounded cursor-pointer hover:bg-gray-700"
+          className="mt-1 ms-2 px-2 py-1 flex items-center bg-gray-600 text-white rounded cursor-pointer hover:bg-gray-700"
         >
+          <FaSearch className="text-white text-base me-1" />
           Ver informacion
         </button>
       </div>

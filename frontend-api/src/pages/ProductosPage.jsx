@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { obtenerProductos } from "../services/productos";
 import ProductoCard from "../components/ProductoCard";
 import FormularioProducto from "../components/FormularioProducto";
+import { FaPlus } from "react-icons/fa";
 
 // Página principal de productos
 // que muestra un formulario para crear productos
@@ -79,10 +80,12 @@ const ProductosPage = () => {
     <>
       {/* Botón para mostrar/ocultar el formulario */}
       {/* Si 'form' es true, muestra el formulario para crear un producto */}
+
       <button
-        className="bg-blue-600 text-amber-100 rounded cursor-pointer hover:bg-blue-700 p-2 m-3"
+        className="flex items-center gap-2 bg-blue-600 text-white rounded px-4 py-2 m-3 hover:bg-blue-700 transition cursor-pointer"
         onClick={() => setForm(!form)}
       >
+        <FaPlus className="text-white text-base" />
         Registrar producto
       </button>
       {/* Mostrar formulario si 'form' es true */}
